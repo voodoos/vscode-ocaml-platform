@@ -252,6 +252,16 @@
         "command": "ocaml.copy-type-under-cursor",
         "category": "OCaml",
         "title": "Copy Type Under Cursor"
+      },
+      {
+        "command": "ocaml.type-enclosing",
+        "category": "OCaml",
+        "title": "Get the type of the selection"
+      },
+      {
+        "command": "ocaml.grow-type-enclosing",
+        "category": "OCaml",
+        "title": "Get the type of the next enclosing selection"
       }
     ],
     "configuration": {
@@ -752,7 +762,7 @@
       {
         "command": "ocaml.switch-hover-mode",
         "key": "Alt+H",
-        "when": "editorTextFocus && editorLangId == ocaml || editorLangId == ocaml.interface "
+        "when": "editorTextFocus && editorLangId == ocaml || editorLangId == ocaml.interface"
       }
     ],
     "languages": [
