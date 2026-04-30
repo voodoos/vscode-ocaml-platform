@@ -1,0 +1,11 @@
+(executable
+ (name vscode_ocaml_platform_web)
+ (modules vscode_ocaml_platform_web)
+ (libraries js_of_ocaml jsonoo promise_jsoo vscode vscode_languageclient)
+ (modes js))
+
+(executable
+ (name merlin_lsp_worker)
+ (modules merlin_lsp_worker)
+ (libraries js_of_ocaml merlin-js.merlin_lsp)
+ (modes js))

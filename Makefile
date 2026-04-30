@@ -22,7 +22,9 @@ switch: create_switch deps
 
 .PHONY: build
 build: # https://github.com/ewanharris/vscode-versions
-	dune build src/vscode_ocaml_platform.bc.js --profile=release
+	dune build --profile=release src/vscode_ocaml_platform.bc.js \
+	           src-web/vscode_ocaml_platform_web.bc.js \
+						 src-web/merlin_lsp_worker.bc.js
 	yarn workspace astexplorer build
 	yarn esbuild _build/default/src/vscode_ocaml_platform.bc.js \
 		--bundle \
@@ -32,6 +34,29 @@ build: # https://github.com/ewanharris/vscode-versions
 		--packages=bundle \
 		--platform=node \
 		--target=node22 \
+		--analyze
+	yarn esbuild _build/default/src-web/vscode_ocaml_platform_web.bc.js \
+		--bundle \
+		--external:vscode \
+		--external:node:tty \
+		--minify \
+		--outdir=dist \
+		--packages=bundle \
+		--platform=browser \
+		--target=es2022 \
+		--analyze
+	yarn esbuild _build/default/src-web/merlin_lsp_worker.bc.js \
+		--bundle \
+		--minify \
+		--external:node:os \
+		--external:node:child_process \
+		--external:node:util \
+		--external:node:tty \
+		--external:node:fs \
+		--outdir=dist \
+		--packages=bundle \
+		--platform=browser \
+		--target=es2022 \
 		--analyze
 
 .PHONY: test

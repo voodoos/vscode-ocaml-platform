@@ -1,7 +1,6 @@
 (library
  (name merlin_lsp)
- (preprocess
-  (pps js_of_ocaml-ppx))
+ (public_name merlin-js.merlin_lsp)
  (js_of_ocaml
   (javascript_files thread_stubs.js merlin_stubs.js))
  (libraries

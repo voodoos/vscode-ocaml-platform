@@ -21,6 +21,7 @@
   "sideEffects": false,
   "type": "commonjs",
   "main": "./dist/vscode_ocaml_platform.bc.js",
+  "browser": "./dist/vscode_ocaml_platform_web.bc.js",
   "files": [
     "assets",
     "astexplorer/dist",

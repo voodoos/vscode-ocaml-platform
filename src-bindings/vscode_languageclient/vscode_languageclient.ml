@@ -194,6 +194,15 @@ module LanguageClient = struct
         -> t
       [@@js.new "vscode_languageclient.LanguageClient"]
 
+      val make_browser
+        :  id:string
+        -> name:string
+        -> clientOptions:ClientOptions.t
+        -> worker:Ojs.t
+        -> unit
+        -> t
+      [@@js.new "vscode_languageclient_browser.LanguageClient"]
+
       val start : t -> unit Promise.t [@@js.call]
       val isRunning : t -> bool [@@js.call]
       val stop : t -> unit Promise.t [@@js.call]

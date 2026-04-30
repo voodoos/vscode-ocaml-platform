@@ -149,6 +149,14 @@ module LanguageClient : sig
     -> unit
     -> t
 
+  val make_browser
+    :  id:string
+    -> name:string
+    -> clientOptions:ClientOptions.t
+    -> worker:Ojs.t
+    -> unit
+    -> t
+
   val start : t -> unit Promise.t
   val isRunning : t -> bool
   val stop : t -> unit Promise.t
