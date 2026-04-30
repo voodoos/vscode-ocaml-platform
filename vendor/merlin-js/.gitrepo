@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/ingydotnet/git-subrepo#readme
+;
+[subrepo]
+	remote = git@github.com:voodoos/merlin-js.git
+	branch = main
+	commit = a7367198d332f153ed27de2136d3c6a4af8e206f
+	parent = 6d9e4a74a3b655d66c55dabf13b75f551b266790
+	method = merge
+	cmdver = 0.4.5

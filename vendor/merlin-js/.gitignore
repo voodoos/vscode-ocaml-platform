@@ -1,0 +1,31 @@
+_build
+_opam
+.merlin
+jbuild-workspace
+dune-workspace
+*.install
+*.tar.gz
+*.pyc
+*.cmly
+*.elc
+
+/ocamlmerlin
+/ocamlmerlin-server
+/ocamlmerlin-lsp
+/dot-merlin-reader
+
+# Ignore garbage files from editors
+*.un~
+*.swp
+*.swo
+
+# merlin js specific
+*.bc*
+node_modules
+index.js
+merlin-lsp.js
+
+# Stdlib in examples We cannot use sub .gitignore files because it messes up
+# with the upload to gh-pages
+example/workers/stdlib/*
+example/workers/stdlib/!dune

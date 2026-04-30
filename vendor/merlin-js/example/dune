@@ -1,0 +1,21 @@
+(executable
+ (name app)
+ (modes js)
+ (promote (until-clean))
+ (modules App)
+ (libraries
+  merlin_client
+  code-mirror
+  merlin-js.code-mirror
+  merlin-js.worker.static))
+
+(executable
+ (name dynamic)
+ (modes js)
+ (promote (until-clean))
+ (modules Dynamic)
+ (libraries merlin_client code-mirror merlin-js.code-mirror))
+
+(alias
+ (name all-js)
+ (deps app.bc.js dynamic.bc.js))

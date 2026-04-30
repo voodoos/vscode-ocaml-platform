@@ -1,0 +1,9 @@
+(executable
+ (name main)
+ (modes js)
+ (promote (until-clean))
+ (libraries code-mirror code-mirror.lsp-client brr merlin-js.code-mirror))
+
+(alias
+ (name all-js)
+ (deps main.bc.js))
