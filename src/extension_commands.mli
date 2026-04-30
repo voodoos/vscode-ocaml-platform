@@ -14,7 +14,10 @@
     extension context provided. *)
 val register_all_commands : Vscode.ExtensionContext.t -> Extension_instance.t -> unit
 
-val register : ('a, 'b) Command_api.handle -> (Extension_instance.t -> 'a -> 'b) -> unit
+val register
+  :  ('a, 'b) Command_api.handle
+  -> (Vscode.ExtensionContext.t -> Extension_instance.t -> 'a -> 'b)
+  -> unit
 
 val register_text_editor
   :  (unit, unit) Command_api.handle

@@ -65,7 +65,7 @@ let createDebugAdapterDescriptor ~instance ~session:_ ~executable:_ =
 
 module Command = struct
   let _ask_debug_program =
-    let callback (_ : Extension_instance.t) () =
+    let callback _ (_ : Extension_instance.t) () =
       let open Promise.Syntax in
       let defaultUri =
         Option.map (Workspace.rootPath ()) ~f:(fun path -> Uri.parse path ())
@@ -94,7 +94,7 @@ module Command = struct
   ;;
 
   let _start_debugging =
-    let callback (_ : Extension_instance.t) resourceUri =
+    let callback _ (_ : Extension_instance.t) resourceUri =
       let resourceUri =
         match resourceUri with
         | Some resourceUri -> Some resourceUri
@@ -122,7 +122,7 @@ module Command = struct
   ;;
 
   let _goto_closure_code_location =
-    let callback (_ : Extension_instance.t) context =
+    let callback _ (_ : Extension_instance.t) context =
       let open Promise.Syntax in
       match Debug.activeDebugSession () with
       | Some debugSession ->

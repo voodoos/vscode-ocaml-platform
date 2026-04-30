@@ -124,7 +124,7 @@ end
 
 module Command = struct
   let _remove_switch =
-    let callback (_ : Extension_instance.t) arg =
+    let callback _ (_ : Extension_instance.t) arg =
       let (_ : unit Promise.t) =
         let dep = [%js.to: Dependency.t] arg in
         match dep with
@@ -158,7 +158,7 @@ module Command = struct
   ;;
 
   let _open_documentation =
-    let callback (_ : Extension_instance.t) arg =
+    let callback _ (_ : Extension_instance.t) arg =
       let (_ : unit Promise.t) =
         let dep = [%js.to: Dependency.t] arg in
         match dep with
@@ -225,5 +225,5 @@ let register extension instance =
     ExtensionContext.subscribe extension ~disposable
   in
   Extension_commands.register Command_api.Internal.refresh_switches
-  @@ fun (_ : Extension_instance.t) () -> EventEmitter.fire event_emitter None
+  @@ fun _ (_ : Extension_instance.t) () -> EventEmitter.fire event_emitter None
 ;;

@@ -154,7 +154,7 @@ let prepare_code code =
 
 module Command = struct
   let _open_repl =
-    let callback (instance : Extension_instance.t) () =
+    let callback _ (instance : Extension_instance.t) () =
       let (_ : unit Promise.t) =
         let open Promise.Syntax in
         let sandbox = Extension_instance.sandbox instance in

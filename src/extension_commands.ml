@@ -3,7 +3,7 @@ open Import
 type t =
   | Command :
       { handle : ('a, 'b) Command_api.handle
-      ; callback : Extension_instance.t -> 'a -> 'b
+      ; callback : ExtensionContext.t -> Extension_instance.t -> 'a -> 'b
       }
       -> t
   | Text_editor_command :
@@ -33,7 +33,7 @@ let text_editor_command handle callback =
 ;;
 
 let _select_sandbox =
-  let callback (instance : Extension_instance.t) () =
+  let callback context (instance : Extension_instance.t) () =
     let open Promise.Syntax in
     let (_ : unit Promise.t) =
       let* sandbox = Sandbox.select_sandbox (Extension_instance.sandbox instance) in
@@ -43,7 +43,7 @@ let _select_sandbox =
         Extension_instance.set_sandbox instance new_sandbox;
         let* () = Sandbox.save_to_settings new_sandbox in
         let* () = Extension_instance.update_ocaml_info instance in
-        Extension_instance.start_language_server instance
+        Extension_instance.start_language_server context instance
     in
     ()
   in
@@ -51,7 +51,7 @@ let _select_sandbox =
 ;;
 
 let _install_ocaml_lsp_server =
-  let callback (instance : Extension_instance.t) () =
+  let callback context (instance : Extension_instance.t) () =
     let open Promise.Syntax in
     let (_ : unit Promise.t) =
       let sandbox = Extension_instance.sandbox instance in
@@ -62,7 +62,7 @@ let _install_ocaml_lsp_server =
       | Error _ ->
         let* () = Extension_instance.install_ocaml_lsp_server sandbox in
         show_message `Info "Installation of OCaml-LSP server completed successfully.";
-        Extension_instance.start_language_server instance
+        Extension_instance.start_language_server context instance
     in
     ()
   in
@@ -70,7 +70,7 @@ let _install_ocaml_lsp_server =
 ;;
 
 let _upgrade_ocaml_lsp_server =
-  let callback (instance : Extension_instance.t) () =
+  let callback context (instance : Extension_instance.t) () =
     let open Promise.Syntax in
     let (_ : unit Promise.t) =
       let sandbox = Extension_instance.sandbox instance in
@@ -82,7 +82,7 @@ let _upgrade_ocaml_lsp_server =
       | Ok () -> Promise.return ()
       | Error (`Msg _error) ->
         let* _ = Extension_instance.upgrade_ocaml_lsp_server sandbox in
-        let+ _ = Extension_instance.start_language_server instance in
+        let+ _ = Extension_instance.start_language_server context instance in
         show_message `Info "OCaml-LSP server upgraded successfully"
     in
     ()
@@ -91,7 +91,7 @@ let _upgrade_ocaml_lsp_server =
 ;;
 
 let _install_dune_lsp_server =
-  let callback (instance : Extension_instance.t) () =
+  let callback context (instance : Extension_instance.t) () =
     let open Promise.Syntax in
     let _ =
       let sandbox = Extension_instance.sandbox instance in
@@ -125,7 +125,7 @@ let _install_dune_lsp_server =
                 Ojs.null
             in
             let* _ = Vscode.Window.withProgress (module Ojs) ~options ~task in
-            let+ _ = Extension_instance.start_language_server instance in
+            let+ _ = Extension_instance.start_language_server context instance in
             ())
         else Extension_instance.suggest_to_run_dune_pkg_lock () |> Promise.return
       | _ ->
@@ -144,7 +144,7 @@ let _install_dune_lsp_server =
 ;;
 
 let _run_dune_pkg_lock =
-  let callback (instance : Extension_instance.t) () =
+  let callback context (instance : Extension_instance.t) () =
     let open Promise.Syntax in
     let _ =
       match Extension_instance.sandbox instance with
@@ -167,7 +167,7 @@ let _run_dune_pkg_lock =
             Ojs.null
         in
         let+ _ = Vscode.Window.withProgress (module Ojs) ~options ~task in
-        let _ = Extension_instance.start_language_server instance in
+        let _ = Extension_instance.start_language_server context instance in
         ()
       | _ ->
         show_message
@@ -185,15 +185,17 @@ let _run_dune_pkg_lock =
 ;;
 
 let _restart_language_server =
-  let callback (instance : Extension_instance.t) () =
-    let (_ : unit Promise.t) = Extension_instance.start_language_server instance in
+  let callback context (instance : Extension_instance.t) () =
+    let (_ : unit Promise.t) =
+      Extension_instance.start_language_server context instance
+    in
     ()
   in
   command Command_api.Internal.restart_language_server callback
 ;;
 
 let _select_sandbox_and_open_terminal =
-  let callback (instance : Extension_instance.t) () =
+  let callback _ (instance : Extension_instance.t) () =
     let (_ : unit option Promise.t) =
       let open Promise.Option.Syntax in
       let+ sandbox = Sandbox.select_sandbox (Extension_instance.sandbox instance) in
@@ -205,21 +207,21 @@ let _select_sandbox_and_open_terminal =
 ;;
 
 let _open_terminal =
-  let callback (instance : Extension_instance.t) () =
+  let callback _ (instance : Extension_instance.t) () =
     Extension_instance.sandbox instance |> Extension_instance.open_terminal
   in
   command Command_api.Internal.open_terminal callback
 ;;
 
 let _stop_documentation_server =
-  let callback (instance : Extension_instance.t) () =
+  let callback _ (instance : Extension_instance.t) () =
     Extension_instance.stop_documentation_server instance
   in
   command Command_api.Internal.stop_documentation_server callback
 ;;
 
 let _switch_impl_intf =
-  let callback (instance : Extension_instance.t) () =
+  let callback _ (instance : Extension_instance.t) () =
     let try_switching () =
       let open Option.O in
       let+ editor = Window.activeTextEditor () in
@@ -264,7 +266,7 @@ let walkthrough_terminal instance =
 
 let _install_opam =
   let outdated_opam = ref false in
-  let callback (instance : Extension_instance.t) () =
+  let callback _ (instance : Extension_instance.t) () =
     let process_installation () =
       let open Promise.Syntax in
       let* opam = Opam.make () in
@@ -368,7 +370,7 @@ let _install_opam =
 ;;
 
 let _init_opam =
-  let callback (instance : Extension_instance.t) () =
+  let callback _ (instance : Extension_instance.t) () =
     let options =
       ProgressOptions.create
         ~location:(`ProgressLocation Notification)
@@ -403,7 +405,7 @@ let _init_opam =
 ;;
 
 let _install_ocaml_dev =
-  let callback (instance : Extension_instance.t) () =
+  let callback _ (instance : Extension_instance.t) () =
     let options =
       ProgressOptions.create
         ~location:(`ProgressLocation Notification)
@@ -440,7 +442,7 @@ let _install_ocaml_dev =
 ;;
 
 let _open_utop =
-  let callback (instance : Extension_instance.t) () =
+  let callback _ (instance : Extension_instance.t) () =
     let options =
       ProgressOptions.create
         ~location:(`ProgressLocation Notification)
@@ -475,7 +477,7 @@ let _open_utop =
 ;;
 
 let _open_current_dune_file =
-  let callback (_ : Extension_instance.t) () =
+  let callback _ (_ : Extension_instance.t) () =
     match Vscode.Window.activeTextEditor () with
     | None ->
       (* this command is available (in the command palette) only when a file is
@@ -500,7 +502,7 @@ let _open_current_dune_file =
 ;;
 
 let _open_ocamllsp_output_pane, _open_ocaml_platform_ext_pane, _open_ocaml_commands_pane =
-  let callback output (_ : Extension_instance.t) () =
+  let callback output _ (_ : Extension_instance.t) () =
     let show_output (lazy output) = OutputChannel.show output () in
     show_output output
   in
@@ -632,7 +634,7 @@ end = struct
     Custom_requests.send_request client Custom_requests.typedHoles uri
   ;;
 
-  let jump_to_hole jump (instance : Extension_instance.t) args =
+  let jump_to_hole jump _ (instance : Extension_instance.t) args =
     (* this command is available (in the command palette) only when a file is
        open *)
     match Window.activeTextEditor () with
@@ -849,7 +851,7 @@ module Copy_type_under_cursor = struct
   ;;
 
   let _copy_type_under_cursor =
-    let callback (instance : Extension_instance.t) () =
+    let callback _ (instance : Extension_instance.t) () =
       let copy_type_under_cursor () =
         match Window.activeTextEditor () with
         | None ->
@@ -950,7 +952,7 @@ module Construct = struct
   ;;
 
   let _construct =
-    let callback (instance : Extension_instance.t) () =
+    let callback _ (instance : Extension_instance.t) () =
       let construct () =
         match Window.activeTextEditor () with
         | None ->
@@ -1143,7 +1145,7 @@ module MerlinJump = struct
   ;;
 
   let _jump =
-    let callback (instance : Extension_instance.t) () =
+    let callback _ (instance : Extension_instance.t) () =
       let jump () =
         match Window.activeTextEditor () with
         | None ->
@@ -1349,7 +1351,7 @@ module Search_by_type = struct
   ;;
 
   let _search_by_type =
-    let callback (instance : Extension_instance.t) () =
+    let callback _ (instance : Extension_instance.t) () =
       match Window.activeTextEditor () with
       | None ->
         Command_api.Command_errors.text_editor_must_be_active
@@ -1524,7 +1526,7 @@ module Navigate_holes = struct
   ;;
 
   let _holes =
-    let callback (instance : Extension_instance.t) () =
+    let callback _ (instance : Extension_instance.t) () =
       match Window.activeTextEditor () with
       | None ->
         Command_api.Command_errors.text_editor_must_be_active
@@ -1570,7 +1572,9 @@ let _type_selection =
 let register extension instance = function
   | Command { handle; callback } ->
     let (module T) = handle.return_type in
-    let callback ~args = [%js.of: T.t] (callback instance (handle.args_of_js args)) in
+    let callback ~args =
+      [%js.of: T.t] (callback extension instance (handle.args_of_js args))
+    in
     let disposable = Commands.registerCommand ~command:handle.id ~callback in
     ExtensionContext.subscribe extension ~disposable
   | Text_editor_command { handle; callback } ->

@@ -253,14 +253,14 @@ let rec type_selection ~instance ?(verbosity = 0) () =
     else display_type instance text_editor result
 ;;
 
-let callback (instance : Extension_instance.t) () =
+let callback _ (instance : Extension_instance.t) () =
   let (_ : unit Promise.t) = type_selection ~instance () in
   ()
 ;;
 
 let extension_name = "Type Previous Selection"
 
-let previous_callback (instance : Extension_instance.t) () =
+let previous_callback _ (instance : Extension_instance.t) () =
   let type_previous_selection () =
     with_checks ~extension_name ~instance
     @@ fun text_editor client ->
@@ -279,7 +279,7 @@ let previous_callback (instance : Extension_instance.t) () =
 
 let extension_name = "Increase Selection Type Verbosity"
 
-let verbosity_callback (instance : Extension_instance.t) () =
+let verbosity_callback _ (instance : Extension_instance.t) () =
   let bump_selection_type_verbosity () =
     with_checks ~extension_name ~instance
     @@ fun text_editor client ->

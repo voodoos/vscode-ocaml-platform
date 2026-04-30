@@ -169,7 +169,7 @@ let check_ocaml_lsp_available (sandbox : Sandbox.t) =
 ;;
 
 module Language_server_init : sig
-  val start_language_server : t -> unit Promise.t
+  val start_language_server : ExtensionContext.t -> t -> unit Promise.t
 end = struct
   let client_options () =
     let documentSelector =
@@ -249,7 +249,7 @@ end = struct
     LanguageClient.StaticFeature.make ~fillClientCapabilities ~initialize ~clear ()
   ;;
 
-  let start_language_server t =
+  let start_language_server _context t =
     let open Promise.Syntax in
     let* () = stop_server t in
     let* ocamllsp_present = check_ocaml_lsp_available t.sandbox in

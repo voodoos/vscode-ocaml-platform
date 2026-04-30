@@ -53,7 +53,7 @@ end
 
 module Command = struct
   let _open_documentation =
-    let callback (_ : Extension_instance.t) arg =
+    let callback _ (_ : Extension_instance.t) arg =
       let (_ : unit Promise.t) =
         let dep = [%js.to: Dependency.t] arg in
         let open Promise.Syntax in
@@ -77,7 +77,7 @@ module Command = struct
   ;;
 
   let _generate_documentation =
-    let callback (instance : Extension_instance.t) arg =
+    let callback _ (instance : Extension_instance.t) arg =
       let (_ : unit Promise.t) =
         let open Promise.Syntax in
         let sandbox = Extension_instance.sandbox instance in
@@ -135,7 +135,7 @@ module Command = struct
   ;;
 
   let _uninstall =
-    let callback (instance : Extension_instance.t) arg =
+    let callback _ (instance : Extension_instance.t) arg =
       let (_ : unit Promise.t) =
         let dep = [%js.to: Dependency.t] arg in
         let message =
@@ -159,7 +159,7 @@ module Command = struct
   ;;
 
   let _upgrade =
-    let callback (instance : Extension_instance.t) () =
+    let callback _ (instance : Extension_instance.t) () =
       let (_ : unit Promise.t) =
         let open Promise.Syntax in
         let sandbox = Extension_instance.sandbox instance in
@@ -185,7 +185,7 @@ module Command = struct
   ;;
 
   let _install =
-    let callback (instance : Extension_instance.t) () =
+    let callback _ (instance : Extension_instance.t) () =
       let (_ : unit Promise.t) =
         let open Promise.Syntax in
         let* package_str_opt = ask_packages () in
@@ -241,5 +241,5 @@ let register extension instance =
   in
   ExtensionContext.subscribe extension ~disposable;
   Extension_commands.register Command_api.Internal.refresh_sandbox
-  @@ fun (_ : Extension_instance.t) () -> EventEmitter.fire event_emitter None
+  @@ fun _ (_ : Extension_instance.t) () -> EventEmitter.fire event_emitter None
 ;;
