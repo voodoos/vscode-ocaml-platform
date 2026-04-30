@@ -31,6 +31,7 @@ type t =
   | Global
   | Custom of string
   | Dune of Dune.t
+  | Builtin
 
 val workspace_root : unit -> Path.t option
 val equal : t -> t -> bool

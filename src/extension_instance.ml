@@ -149,6 +149,7 @@ let suggest_to_run_dune_pkg_lock () =
 
 let check_ocaml_lsp_available (sandbox : Sandbox.t) =
   match sandbox with
+  | Builtin -> Promise.return (Ok ())
   | Dune dune ->
     let open Promise.Syntax in
     let+ dune_lsp_present = Dune.is_ocamllsp_present dune in
@@ -249,6 +250,38 @@ end = struct
     LanguageClient.StaticFeature.make ~fillClientCapabilities ~initialize ~clear ()
   ;;
 
+  let make_client context t =
+    let clientOptions = client_options () in
+    match t.sandbox with
+    | Sandbox.Builtin ->
+      let worker_uri =
+        Uri.joinPath
+          (ExtensionContext.extensionUri context)
+          ~pathSegments:[ "dist"; "merlin_lsp_worker.bc.js" ]
+
+      in
+      let worker_uri = Uri.toString worker_uri () in
+      Stdlib.Printf.eprintf "BEFORE %s\n%!" worker_uri;
+      let worker : Ojs.t =
+        Js_of_ocaml.Worker.create worker_uri |> Stdlib.Obj.magic
+      in
+      Stdlib.Printf.eprintf "AFTER \n%!";
+      LanguageClient.make_browser
+        ~id:"ocaml"
+        ~name:"OCaml Platform VS Code extension"
+        ~clientOptions
+        ~worker
+        ()
+    | _ ->
+      let serverOptions = server_options t in
+      LanguageClient.make
+        ~id:"ocaml"
+        ~name:"OCaml Platform VS Code extension"
+        ~serverOptions
+        ~clientOptions
+        ()
+  ;;
+
   let start_language_server _context t =
     let open Promise.Syntax in
     let* () = stop_server t in
@@ -256,25 +289,19 @@ end = struct
     match ocamllsp_present with
     | Ok () ->
       let+ res =
-        let client =
-          let serverOptions = server_options t in
-          let clientOptions = client_options () in
-          LanguageClient.make
-            ~id:"ocaml"
-            ~name:"OCaml Platform VS Code extension"
-            ~serverOptions
-            ~clientOptions
-            ()
-        in
+        let client = make_client context t in
         LanguageClient.registerFeature client ~feature:client_capabilities;
         let open Promise.Syntax in
         let+ () = LanguageClient.start client in
         let initialize_result = LanguageClient.initializeResult client in
         let ocaml_lsp = Ocaml_lsp.of_initialize_result initialize_result in
         t.lsp_client <- Some (client, ocaml_lsp);
-        (match Ocaml_lsp.is_version_up_to_date ocaml_lsp (ocaml_version_exn t) with
-         | Ok () -> ()
-         | Error (`Msg _) -> ());
+        (match t.ocaml_version with
+         | Some ocaml_v ->
+           (match Ocaml_lsp.is_version_up_to_date ocaml_lsp ocaml_v with
+            | Ok () -> ()
+            | Error (`Msg _) -> ())
+         | None -> ());
         send_configuration
           client
           ~codelens:t.codelens

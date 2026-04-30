@@ -74,6 +74,7 @@ type t =
   | Global
   | Custom of string
   | Dune of Dune.t
+  | Builtin
 
 let equal t1 t2 =
   match t1, t2 with
@@ -82,6 +83,7 @@ let equal t1 t2 =
   | Opam (o1, s1), Opam (o2, s2) -> Opam.Switch.equal s1 s2 && Opam.equal o1 o2
   | Custom s1, Custom s2 -> String.equal s1 s2
   | Dune d1, Dune d2 -> Dune.equal d1 d2
+  | Builtin, Builtin -> true
   | _, _ -> false
 ;;
 
@@ -91,6 +93,7 @@ let to_string = function
   | Global -> "global"
   | Custom _ -> "custom"
   | Dune _ -> "dune"
+  | Builtin -> "builtin"
 ;;
 
 let to_pretty_string t =
@@ -107,6 +110,7 @@ let to_pretty_string t =
   | Global -> "Global OCaml"
   | Custom _ -> "Custom OCaml"
   | Dune _ -> "Dune Package Manager"
+  | Builtin -> "Builtin OCaml LSP (Partial support for single files)"
 ;;
 
 module Kind = struct
@@ -116,6 +120,7 @@ module Kind = struct
     | Global
     | Custom
     | Dune
+    | Builtin
 
   let of_string = function
     | "opam" -> Some Opam
@@ -123,6 +128,7 @@ module Kind = struct
     | "global" -> Some Global
     | "custom" -> Some Custom
     | "dune" -> Some Dune
+    | "builtin" -> Some Builtin
     | _ -> None
   ;;
 
@@ -131,7 +137,9 @@ module Kind = struct
     match of_string (string json) with
     | Some s -> s
     | None ->
-      raise (Jsonoo.Decode_error "opam | esy | global | custom are the only valid values")
+      raise
+        (Jsonoo.Decode_error
+           "opam | esy | global | custom | dune | builtin are the only valid values")
   ;;
 
   let to_string = function
@@ -140,6 +148,7 @@ module Kind = struct
     | Global -> "global"
     | Custom -> "custom"
     | Dune -> "dune"
+    | Builtin -> "builtin"
   ;;
 
   let to_json s = Jsonoo.Encode.string (to_string s)
@@ -152,6 +161,7 @@ module Setting = struct
     | Global
     | Custom of string
     | Dune of Path.t
+    | Builtin
 
   let kind : t -> Kind.t = function
     | Opam _ -> Opam
@@ -159,6 +169,7 @@ module Setting = struct
     | Global -> Global
     | Custom _ -> Custom
     | Dune _ -> Dune
+    | Builtin -> Builtin
   ;;
 
   let of_json json =
@@ -185,6 +196,7 @@ module Setting = struct
     | Dune ->
       let root = Jsonoo.Decode.field "root" decode_vars json |> Path.of_string in
       Dune root
+    | Builtin -> Builtin
   ;;
 
   let to_json (t : t) =
@@ -199,6 +211,7 @@ module Setting = struct
     | Opam switch -> object_ [ kind; "switch", encode_vars @@ Opam.Switch.name switch ]
     | Custom template -> object_ [ kind; "template", string template ]
     | Dune dune -> object_ [ kind; "root", encode_vars @@ Path.to_string dune ]
+    | Builtin -> Jsonoo.Encode.object_ [ kind ]
   ;;
 
   let t = Settings.create_setting ~scope:Workspace ~key:"sandbox" ~of_json ~to_json
@@ -266,6 +279,7 @@ let of_settings () : t option Promise.t =
        not_available `Dune;
        Promise.return None
      | Some dune -> Promise.return (Some (Dune dune)))
+  | Some Builtin -> Promise.return (Some Builtin)
 ;;
 
 let detect_esy_sandbox ~project_root esy () =
@@ -343,6 +357,7 @@ let save_to_settings sandbox =
     | Global -> Setting.Global
     | Custom template -> Setting.Custom template
     | Dune dune -> Setting.Dune (Dune.root dune)
+    | Builtin -> Setting.Builtin
   in
   Settings.set ~section:"ocaml" Setting.t (to_setting sandbox)
 ;;
@@ -370,7 +385,7 @@ module Candidate = struct
            then Some (switch_kind_s ^ " | Currently active switch in project root")
            else Some switch_kind_s
          | Esy (_, _) -> Some "Esy"
-         | Global | Custom _ | Dune _ -> None)
+         | Global | Custom _ | Dune _ | Builtin -> None)
     in
     match sandbox with
     | Opam (_, Named name) -> create ~label:name ?description ()
@@ -398,6 +413,12 @@ module Candidate = struct
     | Dune dune ->
       let project_path = Path.to_string (Dune.root dune) in
       create ?description ~label:"Dune Package Manager" ~detail:project_path ()
+    | Builtin ->
+      create
+        ?description
+        ~label:"Builtin"
+        ~detail:"Builtin OCaml LSP with partial support for single files"
+        ()
   ;;
 
   let ok sandbox = { sandbox; status = Ok () }
@@ -479,6 +500,7 @@ let sandbox_candidates ~workspace_folders =
          sandboxes, current_switch_sandbox)
   in
   let global = Candidate.ok Global in
+  let builtin = Candidate.ok Builtin in
   let custom =
     Candidate.ok (Custom "$prog $args")
     (* doesn't matter what the custom fields are set to here user will input
@@ -499,7 +521,7 @@ let sandbox_candidates ~workspace_folders =
     |> List.map ~f:(fun dune -> { Candidate.sandbox = Dune dune; status = Ok () })
   in
   let+ esy, (opam, current_switch), dune = Promise.all3 (esy, opam, dune) in
-  let cs = (global :: custom :: dune) @ esy @ opam in
+  let cs = (global :: builtin :: custom :: dune) @ esy @ opam in
   Option.value_map current_switch ~default:cs ~f:(fun current_switch ->
     current_switch :: cs)
 ;;
@@ -570,6 +592,7 @@ let get_command
       |> String.strip
     in
     Shell command
+  | Builtin -> Spawn { bin = Path.of_string bin; args }
 ;;
 
 let get_install_command sandbox tools =
@@ -597,7 +620,7 @@ let ocaml_version sandbox =
 let packages t =
   let open Promise.Result.Syntax in
   match t with
-  | Global -> Promise.Result.return []
+  | Global | Builtin -> Promise.Result.return []
   | Custom _ | Dune _ -> Promise.Result.return []
   | Esy (esy, manifest) ->
     let+ r = Esy.packages esy manifest in
@@ -610,7 +633,7 @@ let packages t =
 let root_packages t =
   let open Promise.Result.Syntax in
   match t with
-  | Global -> Promise.Result.return []
+  | Global | Builtin -> Promise.Result.return []
   | Custom _ | Dune _ -> Promise.Result.return []
   | Esy (esy, manifest) ->
     let+ r = Esy.root_packages esy manifest in
@@ -631,6 +654,9 @@ let uninstall_packages t packages =
   match t with
   | Global ->
     show_message `Error "Uninstalling packages is not supported for Global sandboxes";
+    Promise.return ()
+  | Builtin ->
+    show_message `Error "Uninstalling packages is not supported for Builtin sandboxes";
     Promise.return ()
   | Custom _ ->
     show_message `Error "Uninstalling packages is not supported for Custom sandboxes";
@@ -682,6 +708,9 @@ let install_packages t packages =
   | Global ->
     show_message `Error "Installing packages is not supported for Global sandboxes";
     Promise.return ()
+  | Builtin ->
+    show_message `Error "Installing packages is not supported for Builtin sandboxes";
+    Promise.return ()
   | Custom _ ->
     show_message `Error "Installing packages is not supported for Custom sandboxes";
     Promise.return ()
@@ -725,6 +754,9 @@ let upgrade_packages ?(packages = []) t =
   match t with
   | Global ->
     show_message `Error "Upgrading packages is not supported for Global sandboxes";
+    Promise.return ()
+  | Builtin ->
+    show_message `Error "Upgrading packages is not supported for Builtin sandboxes";
     Promise.return ()
   | Custom _ ->
     show_message `Error "Upgrading packages is not supported for Custom sandboxes";
