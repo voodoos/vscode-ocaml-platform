@@ -1,0 +1,95 @@
+[2026-04-30T14:52:45.255Z] info  code-server 4.117.0 ddeb0a3de0321412c0633dffa85d35770005ae0f
+[2026-04-30T14:52:45.256Z] info  Using user-data-dir /config/data
+[2026-04-30T14:52:45.264Z] info  Using config file /config/.config/code-server/config.yaml
+[2026-04-30T14:52:45.264Z] info  HTTP server listening on http://0.0.0.0:8443/
+[2026-04-30T14:52:45.264Z] info    - Authentication is disabled
+[2026-04-30T14:52:45.264Z] info    - Not serving HTTPS
+[2026-04-30T14:52:45.264Z] info  Session server listening on /config/data/code-server-ipc.sock
+[14:52:55] 
+
+
+
+
+[reconnection-grace-time] No CLI argument provided, using default: 10800000ms (10800s)
+[14:52:55] Extension host agent started.
+[14:52:55] Started initializing default profile extensions in extensions installation folder. file:///config/extensions
+[14:52:55] Completed initializing default profile extensions in extensions installation folder. file:///config/extensions
+[14:52:56] [172.22.0.1][ec644cc8][ManagementConnection] New connection established.
+[14:52:57] [172.22.0.1][d6683b42][ExtensionHostConnection] New connection established.
+[14:52:57] [172.22.0.1][d6683b42][ExtensionHostConnection] <268> Launched Extension Host Process.
+[14:52:57] [172.22.0.1][d6683b42][ExtensionHostConnection] <268> [reconnection-grace-time] Extension host: read VSCODE_RECONNECTION_GRACE_TIME=10800000ms (10800s)
+
+[14:53:38] Installing extension: ocamllabs.ocaml-platform {
+  installGivenVersion: true,
+  isBuiltin: false,
+  isApplicationScoped: false,
+  profileLocation: Vs {
+    scheme: 'file',
+    authority: '',
+    path: '/config/extensions/extensions.json',
+    query: '',
+    fragment: '',
+    _formatted: 'file:///config/extensions/extensions.json',
+    _fsPath: '/config/extensions/extensions.json'
+  },
+  productVersion: { version: '1.117.0', date: '2026-04-21T16:12:14-07:00' }
+}
+[14:53:38] Extracted extension to file:///config/extensions/ocamllabs.ocaml-platform-2.1.0: ocamllabs.ocaml-platform
+[14:53:38] Renamed to /config/extensions/ocamllabs.ocaml-platform-2.1.0
+[14:53:38] Extension installed successfully: ocamllabs.ocaml-platform file:///config/extensions/extensions.json
+[19:59:25] [172.22.0.1][ec644cc8][ManagementConnection] The client has disconnected gracefully, so the connection will be disposed.
+[19:59:25] [172.22.0.1][d6683b42][ExtensionHostConnection] <268> Extension Host Process exited with code: 0, signal: null.
+[19:59:26] [172.22.0.1][60189940][ManagementConnection] New connection established.
+[19:59:26] [172.22.0.1][71cce307][ExtensionHostConnection] New connection established.
+[19:59:26] [172.22.0.1][71cce307][ExtensionHostConnection] <4394> Launched Extension Host Process.
+[19:59:26] [172.22.0.1][71cce307][ExtensionHostConnection] <4394> [reconnection-grace-time] Extension host: read VSCODE_RECONNECTION_GRACE_TIME=10800000ms (10800s)
+
+[20:12:00] [172.22.0.1][60189940][ManagementConnection] The client has disconnected gracefully, so the connection will be disposed.
+[20:12:00] [172.22.0.1][71cce307][ExtensionHostConnection] <4394> Extension Host Process exited with code: 0, signal: null.
+[2026-05-19T17:28:33.589Z] info  code-server 4.117.0 ddeb0a3de0321412c0633dffa85d35770005ae0f
+[2026-05-19T17:28:33.592Z] info  Using user-data-dir /config/data
+[2026-05-19T17:28:33.601Z] info  Using config file /config/.config/code-server/config.yaml
+[2026-05-19T17:28:33.602Z] info  HTTP server listening on http://0.0.0.0:8443/
+[2026-05-19T17:28:33.602Z] info    - Authentication is disabled
+[2026-05-19T17:28:33.602Z] info    - Not serving HTTPS
+[2026-05-19T17:28:33.602Z] info  Session server listening on /config/data/code-server-ipc.sock
+[2026-05-19T19:09:33.261Z] info  code-server 4.117.0 ddeb0a3de0321412c0633dffa85d35770005ae0f
+[2026-05-19T19:09:33.265Z] info  Using user-data-dir /config/data
+[2026-05-19T19:09:33.275Z] info  Using config file /config/.config/code-server/config.yaml
+[2026-05-19T19:09:33.275Z] info  HTTP server listening on http://0.0.0.0:8443/
+[2026-05-19T19:09:33.275Z] info    - Authentication is disabled
+[2026-05-19T19:09:33.275Z] info    - Not serving HTTPS
+[2026-05-19T19:09:33.275Z] info  Session server listening on /config/data/code-server-ipc.sock
+[2026-05-22T13:51:31.745Z] info  code-server 4.117.0 ddeb0a3de0321412c0633dffa85d35770005ae0f
+[2026-05-22T13:51:31.749Z] info  Using user-data-dir /config/data
+[2026-05-22T13:51:31.758Z] info  Using config file /config/.config/code-server/config.yaml
+[2026-05-22T13:51:31.759Z] info  HTTP server listening on http://0.0.0.0:8443/
+[2026-05-22T13:51:31.759Z] info    - Authentication is disabled
+[2026-05-22T13:51:31.759Z] info    - Not serving HTTPS
+[2026-05-22T13:51:31.759Z] info  Session server listening on /config/data/code-server-ipc.sock
+[2026-06-02T15:33:01.175Z] info  code-server 4.117.0 ddeb0a3de0321412c0633dffa85d35770005ae0f
+[2026-06-02T15:33:01.182Z] info  Using user-data-dir /config/data
+[2026-06-02T15:33:01.195Z] info  Using config file /config/.config/code-server/config.yaml
+[2026-06-02T15:33:01.196Z] info  HTTP server listening on http://0.0.0.0:8443/
+[2026-06-02T15:33:01.196Z] info    - Authentication is disabled
+[2026-06-02T15:33:01.196Z] info    - Not serving HTTPS
+[2026-06-02T15:33:01.196Z] info  Session server listening on /config/data/code-server-ipc.sock
+[2026-06-13T11:06:40.103Z] info  code-server 4.117.0 ddeb0a3de0321412c0633dffa85d35770005ae0f
+[2026-06-13T11:06:40.108Z] info  Using user-data-dir /config/data
+[2026-06-13T11:06:40.117Z] info  Using config file /config/.config/code-server/config.yaml
+[2026-06-13T11:06:40.117Z] info  HTTP server listening on http://0.0.0.0:8443/
+[2026-06-13T11:06:40.117Z] info    - Authentication is disabled
+[2026-06-13T11:06:40.118Z] info    - Not serving HTTPS
+[2026-06-13T11:06:40.118Z] info  Session server listening on /config/data/code-server-ipc.sock
+[2026-06-13T11:12:26.318Z] info  code-server 4.117.0 ddeb0a3de0321412c0633dffa85d35770005ae0f
+[2026-06-13T11:12:26.322Z] info  Using user-data-dir /config/data
+[2026-06-13T11:12:26.332Z] info  Using config file /config/.config/code-server/config.yaml
+[2026-06-13T11:12:26.332Z] info  HTTP server listening on http://0.0.0.0:8443/
+[2026-06-13T11:12:26.332Z] info    - Authentication is disabled
+[2026-06-13T11:12:26.332Z] info    - Not serving HTTPS
+[2026-06-20T09:34:42.386Z] info  code-server 4.117.0 ddeb0a3de0321412c0633dffa85d35770005ae0f
+[2026-06-20T09:34:42.392Z] info  Using user-data-dir /config/data
+[2026-06-20T09:34:42.403Z] info  Using config file /config/.config/code-server/config.yaml
+[2026-06-20T09:34:42.403Z] info  HTTP server listening on http://0.0.0.0:8443/
+[2026-06-20T09:34:42.403Z] info    - Authentication is disabled
+[2026-06-20T09:34:42.403Z] info    - Not serving HTTPS

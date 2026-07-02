@@ -1,0 +1,7 @@
+File not found: /app/code-server/lib/vscode/node_modules/vsda/rust/web/vsda.js
+File not found: /app/code-server/lib/vscode/node_modules/vsda/rust/web/vsda_bg.wasm
+File not found: /app/code-server/lib/vscode/node_modules/vsda/rust/web/vsda.js
+File not found: /app/code-server/lib/vscode/node_modules/vsda/rust/web/vsda_bg.wasm
+[2026-06-13T11:12:26.329Z] warn  Could not create socket at /config/data/code-server-ipc.sock
+[2026-06-20T09:34:30.643Z] error Server is not running.
+[2026-06-20T09:34:42.401Z] warn  Could not create socket at /config/data/code-server-ipc.sock

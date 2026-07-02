@@ -1,0 +1,26 @@
+2026-04-30 14:52:55.270 [info] 
+
+
+
+
+2026-04-30 14:52:55.278 [info] Extension host agent started.
+2026-04-30 14:52:55.289 [info] Started initializing default profile extensions in extensions installation folder. file:///config/extensions
+2026-04-30 14:52:55.382 [info] Completed initializing default profile extensions in extensions installation folder. file:///config/extensions
+2026-04-30 14:52:56.713 [info] [172.22.0.1][ec644cc8][ManagementConnection] New connection established.
+2026-04-30 14:52:57.161 [info] [172.22.0.1][d6683b42][ExtensionHostConnection] New connection established.
+2026-04-30 14:52:57.251 [info] [172.22.0.1][d6683b42][ExtensionHostConnection] <268> Launched Extension Host Process.
+2026-04-30 14:52:57.472 [info] [172.22.0.1][d6683b42][ExtensionHostConnection] <268> [reconnection-grace-time] Extension host: read VSCODE_RECONNECTION_GRACE_TIME=10800000ms (10800s)
+
+2026-04-30 14:53:38.570 [info] Installing extension: ocamllabs.ocaml-platform {"installGivenVersion":true,"isBuiltin":false,"isApplicationScoped":false,"profileLocation":{"$mid":1,"fsPath":"/config/extensions/extensions.json","external":"file:///config/extensions/extensions.json","path":"/config/extensions/extensions.json","scheme":"file"},"productVersion":{"version":"1.117.0","date":"2026-04-21T16:12:14-07:00"}}
+2026-04-30 14:53:38.906 [info] Extracted extension to file:///config/extensions/ocamllabs.ocaml-platform-2.1.0: ocamllabs.ocaml-platform
+2026-04-30 14:53:38.916 [info] Renamed to /config/extensions/ocamllabs.ocaml-platform-2.1.0
+2026-04-30 14:53:38.924 [info] Extension installed successfully: ocamllabs.ocaml-platform file:///config/extensions/extensions.json
+2026-04-30 19:59:25.009 [info] [172.22.0.1][ec644cc8][ManagementConnection] The client has disconnected gracefully, so the connection will be disposed.
+2026-04-30 19:59:25.149 [info] [172.22.0.1][d6683b42][ExtensionHostConnection] <268> Extension Host Process exited with code: 0, signal: null.
+2026-04-30 19:59:26.142 [info] [172.22.0.1][60189940][ManagementConnection] New connection established.
+2026-04-30 19:59:26.716 [info] [172.22.0.1][71cce307][ExtensionHostConnection] New connection established.
+2026-04-30 19:59:26.720 [info] [172.22.0.1][71cce307][ExtensionHostConnection] <4394> Launched Extension Host Process.
+2026-04-30 19:59:26.912 [info] [172.22.0.1][71cce307][ExtensionHostConnection] <4394> [reconnection-grace-time] Extension host: read VSCODE_RECONNECTION_GRACE_TIME=10800000ms (10800s)
+
+2026-04-30 20:12:00.323 [info] [172.22.0.1][60189940][ManagementConnection] The client has disconnected gracefully, so the connection will be disposed.
+2026-04-30 20:12:00.450 [info] [172.22.0.1][71cce307][ExtensionHostConnection] <4394> Extension Host Process exited with code: 0, signal: null.

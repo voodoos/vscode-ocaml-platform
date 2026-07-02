@@ -1,0 +1,34 @@
+2026-04-30 19:59:27.029 [info] Extension host with pid 4394 started
+2026-04-30 19:59:27.035 [info] Lock '/config/data/User/workspaceStorage/-4403a425/vscode.lock': Lock acquired.
+2026-04-30 19:59:27.103 [info] ExtensionService#_doActivateExtension vscode.github-authentication, startup: false, activationEvent: 'onAuthenticationRequest:github'
+2026-04-30 19:59:27.104 [info] ExtensionService#_doActivateExtension vscode.emmet, startup: false, activationEvent: 'onLanguage'
+2026-04-30 19:59:27.159 [info] ExtensionService#_doActivateExtension vscode.git-base, startup: true, activationEvent: '*', root cause: vscode.git
+2026-04-30 19:59:27.182 [info] ExtensionService#_doActivateExtension vscode.git, startup: true, activationEvent: '*'
+2026-04-30 19:59:27.183 [info] ExtensionService#_doActivateExtension vscode.github, startup: true, activationEvent: '*'
+2026-04-30 19:59:27.273 [info] Eager extensions activated
+2026-04-30 19:59:27.273 [info] ExtensionService#_doActivateExtension vscode.debug-auto-launch, startup: false, activationEvent: 'onStartupFinished'
+2026-04-30 19:59:27.274 [info] ExtensionService#_doActivateExtension vscode.merge-conflict, startup: false, activationEvent: 'onStartupFinished'
+2026-04-30 19:59:41.615 [info] ExtensionService#_doActivateExtension ocamllabs.ocaml-platform, startup: false, activationEvent: 'onLanguage:ocaml'
+2026-04-30 19:59:41.760 [error] Activating extension ocamllabs.ocaml-platform failed due to an error:
+2026-04-30 19:59:41.760 [error] ReferenceError: __filename is not defined
+	at eval (eval at th0 (/config/extensions/ocamllabs.ocaml-platform-2.1.0/dist/vscode_ocaml_platform.bc.js:44:107998), <anonymous>:1:14)
+	at eval (<anonymous>)
+	at th0 (/config/extensions/ocamllabs.ocaml-platform-2.1.0/dist/vscode_ocaml_platform.bc.js:44:107998)
+	at cv (/config/extensions/ocamllabs.ocaml-platform-2.1.0/dist/vscode_ocaml_platform.bc.js:1977:126318)
+	at /config/extensions/ocamllabs.ocaml-platform-2.1.0/dist/vscode_ocaml_platform.bc.js:1981:38787
+	at Object.<anonymous> (/config/extensions/ocamllabs.ocaml-platform-2.1.0/dist/vscode_ocaml_platform.bc.js:1981:61389)
+	at Module._compile (node:internal/modules/cjs/loader:1705:14)
+	at Object..js (node:internal/modules/cjs/loader:1838:10)
+	at Module.load (node:internal/modules/cjs/loader:1441:32)
+	at Function.<anonymous> (node:internal/modules/cjs/loader:1263:12)
+	at i._load (file:///app/code-server/lib/vscode/out/vs/workbench/api/node/extensionHostProcess.js:831:6589)
+	at e._load (file:///app/code-server/lib/vscode/out/vs/workbench/api/node/extensionHostProcess.js:649:28611)
+	at n._load (file:///app/code-server/lib/vscode/out/vs/workbench/api/node/extensionHostProcess.js:641:25941)
+	at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+	at wrapModuleLoad (node:internal/modules/cjs/loader:237:24)
+	at Module.require (node:internal/modules/cjs/loader:1463:12)
+	at require (node:internal/modules/helpers:147:16)
+	at yP._doLoadModule (file:///app/code-server/lib/vscode/out/vs/workbench/api/node/extensionHostProcess.js:680:2189)
+2026-04-30 20:12:00.359 [info] Extension host terminating: received terminate message from renderer
+2026-04-30 20:12:00.361 [info] Lock '/config/data/User/workspaceStorage/-4403a425/vscode.lock': Marking the lockfile as scheduled to be released in 6000 ms.
+2026-04-30 20:12:00.391 [info] Extension host with pid 4394 exiting with code 0
